@@ -1,0 +1,130 @@
+{
+	"info": {
+		"_postman_id": "b137076d-113b-437c-b0e5-df09e994189e",
+		"name": "ETL Project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6697772"
+	},
+	"item": [
+		{
+			"name": "Upload .CSV File Copy",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"description": "Suporta .CSV, .JSON, .XML, .YML ou .YAML",
+							"type": "file",
+							"src": "/tests/examples/pix_batch_file.csv"
+						},
+						{
+							"key": "encoding",
+							"value": "iso-8859-1",
+							"description": "O default é UTF-8.",
+							"type": "text"
+						},
+						{
+							"key": "fileType",
+							"value": "csv",
+							"description": "Desnecessário uma vez que a extensão do arquivo é .CSV",
+							"type": "text"
+						},
+						{
+							"key": "ignoreDuplicated",
+							"value": "True",
+							"description": "Por padrão a API não verifica pagamentos duplicados.",
+							"type": "text"
+						},
+						{
+							"key": "delimiter",
+							"value": ";",
+							"description": "O delimitador para arquivos .CSV é o ponto-e-vírgula",
+							"type": "text"
+						},
+						{
+							"key": "quoteChar",
+							"value": "\"",
+							"description": "O padrão para arquivos .CSV é aspas-dupla",
+							"type": "text"
+						},
+						{
+							"key": "escapeChar",
+							"value": "\\\\",
+							"description": "O caracter de escape padrão é a contra-barra (\\)",
+							"type": "text"
+						},
+						{
+							"key": "skipInitialSpace",
+							"value": "False",
+							"type": "text"
+						},
+						{
+							"key": "lineTerminator",
+							"value": "\\r\\n",
+							"description": "Quebra de linha padrão é o adotado na plataforma Windows (\\r\\n)",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/pix/batch/:batch_key/items/file",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"pix",
+						"batch",
+						":batch_key",
+						"items",
+						"file"
+					],
+					"variable": [
+						{
+							"key": "batch_key",
+							"value": "5631671361601536"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "id",
+			"value": "1"
+		},
+		{
+			"key": "base_url",
+			"value": "https://postman-rest-api-learner.glitch.me/"
+		}
+	]
+}

@@ -1,0 +1,1 @@
+from .pix_batch_repository_contract import *

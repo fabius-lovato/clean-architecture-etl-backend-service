@@ -1,0 +1,8 @@
+runtime: python310
+
+handlers:
+- url: /pix/batch/.*
+  script: auto
+
+env_variables:
+  # ...

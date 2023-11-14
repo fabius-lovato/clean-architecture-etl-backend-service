@@ -1,0 +1,350 @@
+openapi: 3.1.0
+description: 'Proposta de API para suportar a validação e importação de pagamentos PIX em lote via arquivos .CSV/.XML/.JSON/.YAML, entre outros.'
+servers:
+  - url: 'https://pix-payment-dev-fabiussrv.appspot.com'
+    description: Ambiente de desenvolvimento
+  - url: 'https://pix-payment-fabiussrv.appspot.com'
+    description: Ambiente Produção
+tags:
+  - name: Pix em Lote
+paths:
+  '/pix/batch/{pixBatchId}/items/file':
+    parameters:
+      - name: pixBatchId
+        in: path
+        description: Chave de identificação do lote que receberá os pagamentos PIX.
+        required: true
+        schema:
+          type: string
+    post:
+      summary: Insere pagamentos em um lote PIX.
+      description: |-
+        Este endpoint oferece suporte à inserção eficiente de múltiplos pagamentos Pix em um lote não processado.<br>
+        Ele fornece uma solução conveniente para adicionar vários pagamentos Pix de uma só vez por meio do upload de arquivos.<br>
+        Os clientes têm a flexibilidade de escolher entre vários formatos de arquivo, incluindo .CSV, .JSON, .XML e .YAML.<br>
+        Essa funcionalidade simplifica significativamente o processo de inclusão massiva de pagamentos Pix, tendo como foco a eficiência operacional.
+      operationId: pixBatchItemsFileAdd
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PixBatchFileUploadRequest'
+      tags:
+        - Pix em Lote
+      responses:
+        '201':
+          description: Sucesso. Pagamentos Pix foram inseridos no lote.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PixBatchFilePostResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: Lote Pix não encontrado.
+        '422':
+          description: Encontrado inconsistências no arquivo de lote submetido.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PixBatchFileErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  '/pix/batch/{pixBatchId}/items/file/check':
+    parameters:
+      - name: pixBatchId
+        in: path
+        description: Chave de identificação do lote que receberá os pagamentos PIX.
+        required: true
+        schema:
+          type: string
+      - name: allowduplicated
+        in: query
+        description: |-
+          Instrui a API a como ligar com os pagamentos duplicados.<br>
+          Por padrão (`True`), não é verificado se o lote possui um pagamento com os mesmos dados e irá efetuar a importação. Porém, é possível instruir a API a verificar se existem pagamentos equivalentes.<br>
+          A presença de pagamentos PIX duplicados, dentro do próprio arquivo ou do lote, impede a importação de todos os pagamentos.
+          <br>
+          OBS: Consulte a documentação da API para detalhes sobre a identificação
+        required: false
+        schema:
+          type: boolean
+          default: true
+    post:
+      summary: Valida um arquivo de lote com pagamentos Pix.
+      description: |-
+        Esse endpoint possibilita a inserção massiva de pagamentos PIX a um lote, previamente criado e não iniciado.<br>
+        Oferce um meio
+      operationId: pixBatchItemsFileCheck
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PixBatchFileUploadRequest'
+      tags:
+        - Pix em Lote
+      responses:
+        '200':
+          description: Arquivo de lote válido.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PixBatchFilePostResponse'
+        '400':
+          description: Arquivo de lote possui inconsistências.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PixBatchFileErrorResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: Lote Pix não encontrado.
+        '422':
+          description: Encontrado inconsistências no arquivo de lote submetido.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PixBatchFileErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      description: |-
+        Código de autenticação fornecido pela API de autenticação.<br>
+        Bearer Token provided by the authentication API
+      scheme: bearer
+  schemas:
+    PixBatchFileType:
+      type: string
+      enum:
+        - csv
+        - json
+        - xml
+        - yaml
+    PixBatchFileConfig:
+      type: object
+      properties:
+        file:
+          type: string
+          format: binary
+          description: Arquivo com os pagamentos Pix a serem inseridos no lote.
+        encoding:
+          type: string
+          description: |-
+            O parâmetro `encoding` define a codificação utilizada pelo arquivo enviado.<br>
+            Recomendamos que o arquivo utilize a codificação UTF-8 para garantir compatibilidade e consistência. No entanto, se o arquivo estiver utilizando uma codificação diferente, tais como 'ISO-8859-1', 'Windows-1252', 'ANSI', entre outros, utilize essa propriedade para informar a codificação utilizada.<br>
+          default: UTF-8
+        fileType:
+          allOf:
+            - $ref: '#/components/schemas/PixBatchFileType'
+            - description: |-
+                Tipo e formato do arquivo de lote contendo os pagamentos PIX.<br>
+                Essa propriedade pode ser omitida, uma vez o comportamento padrão é identificar o formato através de sua extensão do arquivo.
+                Entretanto, pode-se utilizar essa propriedade forçar a adoção de um formato específico, ignorando a extensão do arquivo.<br>
+      required:
+        - file
+    PixBatchCSVFileConfig:
+      allOf:
+        - title: Arquivo .CSV
+        - $ref: '#/components/schemas/PixBatchFileConfig'
+        - type: object
+          properties:
+            fileType:
+              allOf:
+                - $ref: '#/components/schemas/PixBatchFileType'
+                - enum:
+                    - csv
+            delimiter:
+              type: string
+              description: |-
+                Caracter utilizado como delimitador de colunas no arquivo .CSV.<br>
+                Se omitido, será utilizado o ponto-e-vírgula (;) por padrão.
+              minLength: 1
+              maxLength: 1
+              default: ;
+            quoteChar:
+              type: string
+              description: |-
+                Caracter que delimita o início e fim de uma string.<br>
+                Por padrão adota-se o uso das aspas duplas ("), porém pode ser redefinido conforme a necessidade do usuário.
+              minLength: 1
+              maxLength: 1
+              default: '"'
+            escapeChar:
+              type: string
+              description: |-
+                Especifica o caractere usado para escapar do caractere delimitador, caso as aspas não sejam usadas.<br>
+                O padrão é não ter caractere de escape.
+              minLength: 1
+              maxLength: 1
+            skipInitialSpace:
+              type: boolean
+              description: 'Quando True, os espaços em branco imediatamente após o delimiter são ignorados.'
+              default: false
+            lineTerminator:
+              type: string
+              description: |-
+                Tipo de quebra de linha utilizada no arquivo .CSV.<br>
+                Normalmente utiliza-se as opção:
+                  - `\r` (CR - MAC);
+                  - `\n` (LF - Linux); ou
+                  - `\r\n` (CR + LF - Windows).
+                Entretanto pode utilizar uma string customizada.<br>
+                Se omitido, irá utilizar o padrão Windows (`\r\n`).
+              default: \r\n
+    PixBatchJSONFileConfig:
+      allOf:
+        - title: Arquivo .JSON
+        - $ref: '#/components/schemas/PixBatchFileConfig'
+        - type: object
+          properties:
+            fileType:
+              allOf:
+                - $ref: '#/components/schemas/PixBatchFileType'
+                - enum:
+                    - json
+    PixBatchYAMLFileConfig:
+      allOf:
+        - title: Arquivo .YAML
+        - $ref: '#/components/schemas/PixBatchFileConfig'
+        - type: object
+          properties:
+            fileType:
+              allOf:
+                - $ref: '#/components/schemas/PixBatchFileType'
+                - enum:
+                    - yaml
+    PixBatchXMLFileConfig:
+      allOf:
+        - title: Arquivo .XML
+        - $ref: '#/components/schemas/PixBatchFileConfig'
+        - type: object
+          properties:
+            fileType:
+              allOf:
+                - $ref: '#/components/schemas/PixBatchFileType'
+                - enum:
+                    - xml
+    PixBatchFileUploadRequest:
+      oneOf:
+        - $ref: '#/components/schemas/PixBatchCSVFileConfig'
+        - $ref: '#/components/schemas/PixBatchJSONFileConfig'
+        - $ref: '#/components/schemas/PixBatchYAMLFileConfig'
+        - $ref: '#/components/schemas/PixBatchXMLFileConfig'
+      discriminator:
+        propertyName: fileType
+        mapping:
+          csv: '#/components/schemas/PixBatchCSVFileConfig'
+          json: '#/components/schemas/PixBatchJSONFileConfig'
+          yaml: '#/components/schemas/PixBatchYAMLFileConfig'
+          xml: '#/components/schemas/PixBatchXMLFileConfig'
+    PixBatchFilePostResponse:
+      type: object
+      properties:
+        file:
+          $ref: '#/components/schemas/PixBatchFileUploadInfo'
+        totalCount:
+          type: integer
+          description: Quantidade total de pagamentos pagamentos Pix encontrados no arquivo.
+          minimum: 0.01
+          example: 20
+        totalAmount:
+          type: number
+          format: double
+          description: Montante total de todos os pagamentos Pix.
+          minimum: 0.01
+          example: 1631490.22
+      required:
+        - file
+        - totalCount
+        - totalAmount
+    PixBatchFileUploadInfo:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Nome do arquivo de lote enviado na requisição.
+        size:
+          type: integer
+          description: 'Tamanho total do arquivo, em bytes.'
+        type:
+          allOf:
+            - $ref: '#/components/schemas/PixBatchFileType'
+            - description: Formato do arquivo.
+        totalLines:
+          type: integer
+          description: Quantia total de linhas que o arquivo possui.
+      required:
+        - name
+        - size
+        - type
+        - totalLines
+    PixBatchFileErrorResponse:
+      type: object
+      properties:
+        file:
+          $ref: '#/components/schemas/PixBatchFileUploadInfo'
+        totalErrorCount:
+          type: integer
+          description: Quantidade total de inconsistências e erros encontrados em todo o arquivo.
+        errors:
+          type: array
+          description: Primeiros 100 erros encontrados.
+          items:
+            $ref: '#/components/schemas/PixBatchFileErroItem'
+    PixBatchFileErroItem:
+      type: object
+      properties:
+        fileline:
+          type: integer
+          format: uint32
+          description: Número da linha no arquivo onde foi encontrado inconsistências.
+        index:
+          type: integer
+          format: uint32
+          description: Índice do pagamento Pix dentro do arquivo.
+        field:
+          type: string
+          description: 'Nome do campo, coluna ou elemento onde foi encontrado a inconsistência.'
+        description:
+          type: string
+          description: Descritivo do erro ou inconsistência encontrada.
+    BadRequestError:
+      type: object
+      properties:
+        field:
+          type: string
+          description: Nome da propriedade onde a inconsistência foi detectada.
+        message:
+          type: string
+          description: Descrição do erro ou inconsistência.
+        detail:
+          type: string
+          description: Informações detalhadas sobre a inconsistência.
+  responses:
+    Unauthorized:
+      description: Usuário não autorizado a efetuar essa operação.
+      content: {}
+    Forbidden:
+      description: Método de autenticação inválido ou transação não permitida.
+      content: {}
+    BadRequest:
+      description: 'Os dados da requisição não atendem aos requisitos de obrigatoriedade, formatação e consistência.'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BadRequestError'
+    InternalServerError:
+      description: Ocorreu um erro interno ao executar a requisição.
+      content: {}

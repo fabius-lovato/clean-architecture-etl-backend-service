@@ -1,0 +1,77 @@
+[
+  {
+    "description": "Nome do lote",
+    "maxLength": "128",
+    "mode": "REQUIRED",
+    "name": "name",
+    "type": "STRING"
+  },
+  {
+    "defaultValueExpression": "CURRENT_TIMESTAMP()",
+    "description": "Data e hora em que o lote foi criado.",
+    "mode": "REQUIRED",
+    "name": "timestamp_created",
+    "type": "TIMESTAMP"
+  },
+  {
+    "defaultValueExpression": "CURRENT_TIMESTAMP()",
+    "description": "Data e hora em que o lote sofreu a \u00faltima altera\u00e7\u00e3o.",
+    "mode": "REQUIRED",
+    "name": "timestamp_updated",
+    "type": "TIMESTAMP"
+  },
+  {
+    "description": "Data e hora em que o processamento d",
+    "mode": "NULLABLE",
+    "name": "timestamp_finish",
+    "type": "TIMESTAMP"
+  },
+  {
+    "defaultValueExpression": "'pending'",
+    "description": "Status atual do lote.",
+    "mode": "REQUIRED",
+    "name": "status",
+    "type": "STRING"
+  },
+  {
+    "defaultValueExpression": "0",
+    "description": "N\u00famero total de pagamentos PIX associados ao lote",
+    "mode": "REQUIRED",
+    "name": "total_items",
+    "type": "INTEGER"
+  },
+  {
+    "defaultValueExpression": "0.00",
+    "description": "Soma de todos os pagamentos Pix associados ao lote.",
+    "mode": "REQUIRED",
+    "name": "total_amount",
+    "type": "FLOAT"
+  },
+  {
+    "defaultValueExpression": "0",
+    "description": "Quantia total de pagamentos que n\u00e3o foram realizado por algum tipo de falha durante o processamento.",
+    "mode": "REQUIRED",
+    "name": "total_failures",
+    "type": "INTEGER"
+  },
+  {
+    "defaultValueExpression": "0.00",
+    "description": "Soma dos valores de todos os pagamentos que falharam durante o processamento.",
+    "mode": "REQUIRED",
+    "name": "total_amount_failure",
+    "type": "FLOAT"
+  },
+  {
+    "defaultValueExpression": "0",
+    "description": "Quantidade de vezes que o lote foi reprocessado ap\u00f3s sua primeira execu\u00e7\u00e3o.",
+    "mode": "REQUIRED",
+    "name": "retries",
+    "type": "INTEGER"
+  },
+  {
+    "description": "Campo livre para adi\u00e7\u00e3o de uma descri\u00e7\u00e3o mais detalhada.",
+    "mode": "NULLABLE",
+    "name": "description",
+    "type": "STRING"
+  }
+]

@@ -1,0 +1,92 @@
+[
+  {
+    "description": "Refer\u00eancia para o lote Pix que detem esse pagamento.",
+    "mode": "REQUIRED",
+    "name": "pix_batch_id",
+    "type": "INTEGER"
+  },
+  {
+    "description": "Data e hora em que o registro foi criado.",
+    "mode": "REQUIRED",
+    "name": "timestamp_created",
+    "type": "TIMESTAMP"
+  },
+  {
+    "description": "Data e hora da \u00faltima modifica\u00e7\u00e3o.",
+    "mode": "REQUIRED",
+    "name": "timestamp_updated",
+    "type": "TIMESTAMP"
+  },
+  {
+    "description": "Status de processamento do item.",
+    "mode": "REQUIRED",
+    "name": "status",
+    "type": "STRING"
+  },
+  {
+    "description": "Valor do pagamento",
+    "mode": "REQUIRED",
+    "name": "amount",
+    "type": "FLOAT"
+  },
+  {
+    "description": "TxId para pagamentos via QR Code est\u00e1tico ou din\u00e2mico.",
+    "mode": "NULLABLE",
+    "name": "tx_id",
+    "type": "STRING"
+  },
+  {
+    "description": "Chave Pix do favorecido do pagamento.",
+    "mode": "NULLABLE",
+    "name": "pix_key",
+    "type": "STRING"
+  },
+  {
+    "description": "C\u00f3digo ISPB do banco ou institui\u00e7\u00e3o financeira de destino.",
+    "mode": "NULLABLE",
+    "name": "institution",
+    "type": "STRING"
+  },
+  {
+    "description": "N\u00famero da ag\u00eancia banc\u00e1ria de destino.",
+    "mode": "NULLABLE",
+    "name": "branch",
+    "type": "STRING"
+  },
+  {
+    "description": "N\u00famero da conta do destinat\u00e1rio.",
+    "mode": "NULLABLE",
+    "name": "account_number",
+    "type": "STRING"
+  },
+  {
+    "description": "Identifica o tipo da conta do favorecido",
+    "mode": "NULLABLE",
+    "name": "account_type",
+    "type": "STRING"
+  },
+  {
+    "description": "Nome do titular da conta",
+    "mode": "NULLABLE",
+    "name": "holder_name",
+    "type": "STRING"
+  },
+  {
+    "description": "N\u00famero do documento de identifica\u00e7\u00e3o do titular (CPF ou CNPJ).",
+    "mode": "NULLABLE",
+    "name": "document_number",
+    "type": "STRING"
+  },
+  {
+    "description": "N\u00famero de retentativas realizadas de efetivar o pagamento Pix.",
+    "mode": "REQUIRED",
+    "name": "retries",
+    "type": "INTEGER"
+  },
+  {
+    "description": "Descri\u00e7\u00e3o do erro ou motivo da falha no pagamento.",
+    "mode": "NULLABLE",
+    "name": "error_description",
+    "type": "STRING"
+  }
+]

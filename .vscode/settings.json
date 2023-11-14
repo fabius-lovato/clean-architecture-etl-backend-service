@@ -1,0 +1,20 @@
+{
+    "cSpell.ignoreWords": [
+        "jsonable",
+        "fasapi",
+        "usecases",
+        "usecase"
+    ],
+    "editor.rulers": [
+        150, 160
+    ],
+    "explorer.confirmDelete": true,
+    "[python]": {
+        "editor.formatOnType": true
+    },
+    "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
+    "files.trimFinalNewlines": true,
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true,
+    "editor.codeActionWidget.includeNearbyQuickFixes": true
+}

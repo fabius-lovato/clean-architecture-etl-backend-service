@@ -1,0 +1,26 @@
+amount;key;txid;ispb;branchNumber;accountNumber;accountType;holdername;documentNumber;identifier;description
+25.50;;;341;1234;012345-6;CHECKING;John Doe;123.456.789-09;;
+40.00;;;001;5678;987654-3;SAVINGS;Jane Smith;12.345.678/0001-90;;
+12.75;;;237;4567;123456-7;CHECKING;Bob Johnson;098.765.432-10;;
+150.75;123.456.789-01;;28195667;4321;12345-6;Savings;John Doe;123.456.789-01;123e4567-e89b-12d3-a456-426614174001;Purchase of Goods
+99.99;janedoe@gmail.com;;87654321;;;Jane Doe;janedoe@gmail.com;;Subscription Renewal
+200.00;22.334.556/0001-99;;60746948;5432;98765-4;Checking;Business Co.;09.876.543/2109;;;
+50.50;+5511987654321;;54403563;;;;João da Silva;123.789.456-01;;Service Fee
+120.00;cee51a63-854e-4570-8348-5a60755df777;;9876;54321-0;Investment;Mega Corp;11.122.333/0001-44;;;
+75.25;123e4567-e89b-12d3-a456-426614174002;;48795256;54321;98765-4;Checking;Fictional Ltd.;22.334.556/0001-99;123e4567-e89b-12d3-a456-426614174002;Consultancy Services
+35.20;987.654.321-09;;7207996;1234;56789-0;Savings;Carlos Silva;876.543.210-98;;Grocery Shopping
+180.50;332.211.155-99;;15173776;9876;54321-0;Investment;Company XYZ;332.211.155-99;123e4567-e89b-12d3-a456-426614174003;Professional Services
+85.75;+5511998765432;;2345;67890-1;Savings;Juliana Lima;987.654.321-09;;Monthly Subscription
+42.90;111.222.333-44;;33485541;2345;67890-1;Checking;Anderson Souza;765.432.109-87;;Online Course Payment
+260.00;987.654.321-09;;7207996;4321;98765-4;Investment;Global Corp;;123e4567-e89b-12d3-a456-426614174004;Equipment Purchase
+67.30;+5511987654321;;12345678;;;;Maria Oliveira;876.543.210-98;;Monthly Subscription Renewal
+95.60;111.222.333-44;;7207996;3456;78901-2;Checking;Company ABC;;;Software Upgrade
+150.00;987.654.321-09;;7207996;7890;12345-6;Savings;Roberto Santos;876.543.210-98;;Annual Membership
+48.75;332.211.155-99;;33485541;2345;67890-1;Checking;Luciana Silva;765.432.109-87;;Online Services
+110.80;+5511998765432;;15173776;4321;98765-4;Investment;Company XYZ;12.345.678/0001-99;123e4567-e89b-12d3
+85.00;5555.666.777-99;;33485541;;;;;;
+120.50;+5511987654321;;15173776;;;;;;
+33.75;123e4567-e89b-12d3-a456-426614174005;;98765432;;;;;;Coffee Shop
+80.00;;A1b2C3d4E5f6G7h8I9j0Kl;;;;;;;
+45.50;;MnOpQrStUvWxYz0123456789;;;;;;
+120.75;;aBcDeFgHiJkLmNoPqRsTuVwXyZ;;;;;;
